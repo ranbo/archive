@@ -76,6 +76,7 @@ public class MailToHtml {
 
       folder.close(false);
       store.close();
+      MailIndexer.createIndexHtml(rootDir, rootDir + File.separator + "index.html");
     } catch (Exception e) {
       e.printStackTrace();
     }

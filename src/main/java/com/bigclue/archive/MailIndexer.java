@@ -19,14 +19,14 @@ import static java.nio.file.Files.readString;
  */
 public class MailIndexer {
   public static void main(String[] args) throws IOException {
-    String inputDir = "TravelBlog"; // Directory containing one subdirectory per email message
+    String inputDir = "Documents/Journal/TravelBlog"; // Directory containing one subdirectory per email message
     String outputFile = "index.html"; // Output HTML file
-    List<Path> htmlFiles = getHtmlFiles(inputDir);
-//    MailIndexer.linkEpisodes(htmlFiles);
-    MailIndexer.createIndexHtml(inputDir, htmlFiles, outputFile);
+    MailIndexer.createIndexHtml(inputDir, outputFile);
   }
 
-  private static void createIndexHtml(String inputDir, List<Path> htmlFiles, String outputFile) throws IOException {
+  public static void createIndexHtml(String inputDir, String outputFile) throws IOException {
+    List<Path> htmlFiles = getHtmlFiles(inputDir);
+    //MailIndexer.linkEpisodes(htmlFiles);
     StringBuilder html = new StringBuilder();
     html.append("""
         <html>
@@ -75,9 +75,12 @@ public class MailIndexer {
               });
             }
             function selectRow(row, htmlFile) {
-              // Deselect all rows
-              document.querySelectorAll('tr.selected').forEach(function(r) { r.classList.remove('selected'); });
+              // Remove selection from other rows
+              var selected = document.querySelector('tr.selected');
+              if (selected) selected.classList.remove('selected');
               row.classList.add('selected');
+      
+              // Load content in iframe using relative path
               var iframe = document.getElementById('reading-pane');
               iframe.src = htmlFile;
             }
